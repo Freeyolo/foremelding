@@ -10,10 +10,13 @@ title: Mine Webcams
   {% for item in site.data.webcams_list %}
     {% assign cam_id = item.id %}
     {% assign cam_file = site.data.fetched_cams["cam_" | append: cam_id] %}
+    
+    <!-- Windy v3 legger alt inne i et 'webcams'-array, vi henter ut det første elementet -->
     {% assign cam_data = cam_file.webcams | first %}
     
     {% if cam_data %}
     <div class="webcam-tile">
+      <!-- Vi henter embed-koden direkte fra player.day -->
       <iframe 
         src="{{ cam_data.player.day }}" 
         allowfullscreen>
