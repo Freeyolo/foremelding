@@ -4,15 +4,12 @@ title: Mine Webcams
 ---
 
 <h2>Webcam-oversikt</h2>
-<p>Her kan du se live-strømmer fra mine utvalgte webkameraer.</p>
+<p>Debug - Antall nedlastede filer funnet: {{ site.data.fetched_cams | size }}</p>
 
-<!-- Her limer du inn rutenettet -->
 <div class="webcam-grid">
   {% for item in site.data.webcams_list %}
     {% assign cam_id = item.id %}
     {% assign cam_file = site.data.fetched_cams["cam_" | append: cam_id] %}
-    
-    <!-- Hent ut det første kameraet fra Windy v3 arrayet -->
     {% assign cam_data = cam_file.webcams | first %}
     
     {% if cam_data %}
@@ -24,7 +21,5 @@ title: Mine Webcams
       <h4 class="webcam-title">{{ cam_data.title }}</h4>
     </div>
     {% endif %}
-  {% endfor %}
-</div>
   {% endfor %}
 </div>
