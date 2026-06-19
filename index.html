@@ -1,0 +1,25 @@
+---
+layout: default
+title: Mine Webcams
+---
+
+<h2>Webcam-oversikt</h2>
+<p>Her kan du se live-strømmer fra mine utvalgte webkameraer.</p>
+
+<!-- Her limer du inn rutenettet -->
+<div class="webcam-grid">
+  {% for item in site.data.webcams_list %}
+    {% assign cam_id = item.id %}
+    {% assign cam_data = site.data.fetched_cams["cam_" | append: cam_id] %}
+    
+    {% if cam_data %}
+    <div class="webcam-tile">
+      <iframe 
+        src="{{ cam_data.player.day }}" 
+        allowfullscreen>
+      </iframe>
+      <h4 class="webcam-title">{{ cam_data.title }}</h4>
+    </div>
+    {% endif %}
+  {% endfor %}
+</div>
