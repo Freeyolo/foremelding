@@ -30,6 +30,26 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
+      # NEW STEP: Loops over your IDs, calls Windy API, and populates data for Jekyll
+      - name: Fetch All Windy Webcams Data
+        env:
+          WINDY_API_KEY: ${{ secrets.WINDY_API_KEY }}
+        run: |
+          mkdir -p _data/fetched_cams
+          
+          # Read the list of IDs from your YAML config file and loop through them
+          # Using standard grep/sed to extract raw IDs reliably without extra npm packages
+          grep -oP 'id:\s*"\K[^"]+' _data/webcams_list.yml | while read -r cam_id; do
+            echo "Fetching data for webcam ID: $cam_id"
+            
+            # Call the Windy Webcams API (v3 requires 'x-windy-api-key' header)
+            curl -s -X GET \
+              -H "x-windy-api-key: $WINDY_API_KEY" \
+              "https://windy.com" \
+              -o "_data/fetched_cams/cam_${cam_id}.json"
+          done
+        
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
